@@ -1,6 +1,9 @@
 from oauth2client.service_account import ServiceAccountCredentials
 import os
 import json
+import gspread
+from flask import Flask, render_template, request, redirect, url_for
+
 
 # 環境変数から認証情報を取得
 creds_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
@@ -11,17 +14,10 @@ if creds_json:
 else:
     raise ValueError("Google credentials not found in environment variables.")
 
+client = gspread.authorize(creds)
 
 # Flaskアプリの作成
-from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
-
-# 認証情報のセットアップ
-creds = ServiceAccountCredentials.from_json_keyfile_name(
-    'rally-kf73-21a154fc2a7e.json',
-    ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-)
-client = gspread.authorize(creds)
 
 ## 送信画面のルーティング
 @app.route('/')
