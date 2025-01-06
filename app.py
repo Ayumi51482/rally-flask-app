@@ -1,4 +1,16 @@
 from oauth2client.service_account import ServiceAccountCredentials
+import os
+from oauth2client.service_account import ServiceAccountCredentials
+
+# 環境変数から認証情報のパスを取得
+json_keyfile = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+
+# 認証情報を設定
+creds = ServiceAccountCredentials.from_json_keyfile_name(
+    json_keyfile,
+    ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+)
+
 # Flaskアプリの作成
 from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
