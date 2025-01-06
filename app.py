@@ -1,3 +1,4 @@
+from oauth2client.service_account import ServiceAccountCredentials
 # Flaskアプリの作成
 from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
