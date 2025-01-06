@@ -1,15 +1,16 @@
 from oauth2client.service_account import ServiceAccountCredentials
 import os
-from oauth2client.service_account import ServiceAccountCredentials
+import json
 
-# 環境変数から認証情報のパスを取得
-json_keyfile = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+# 環境変数から認証情報を取得
+creds_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
-# 認証情報を設定
-creds = ServiceAccountCredentials.from_json_keyfile_name(
-    json_keyfile,
-    ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-)
+if creds_json:
+    creds_info = json.loads(creds_json)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_info)
+else:
+    raise ValueError("Google credentials not found in environment variables.")
+
 
 # Flaskアプリの作成
 from flask import Flask, render_template, request, redirect, url_for
